@@ -1,0 +1,1118 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusCart | Student Marketplace</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #5945e8;
+            --primary-dark: #3925b9;
+            --dark: #1d2140;
+            --text: #475569;
+            --light: #f7f7ff;
+            --border: #e9e9f3;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            background: #fff;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVBAR */
+
+        header {
+            background: white;
+            padding: 17px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 3px 18px #0000000a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: var(--dark);
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .logo small {
+            display: block;
+            font-size: 10px;
+            color: #8990a5;
+            letter-spacing: 2px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 23px;
+        }
+
+        nav a {
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .welcome {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .nav-button {
+            padding: 11px 19px;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .signup-button {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 360px;
+            padding: 65px 7%;
+            display: flex;
+            align-items: center;
+            background:
+                linear-gradient(
+                    90deg,
+                    #f0efff 0%,
+                    #f0efff 35%,
+                    rgba(240,239,255,0.65) 55%,
+                    rgba(240,239,255,0.05) 100%
+                ),
+                url("/static/store/campus-banner.png") center / cover no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 9px 17px;
+            background: #e5e2ff;
+            color: var(--primary);
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 53px);
+            line-height: 1.15;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: #64708a;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            padding: 14px 25px;
+            border-radius: 9px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .hero-art {
+            position: absolute;
+            right: 7%;
+            bottom: 0;
+            font-size: 125px;
+            opacity: 0.75;
+        }
+
+        /* BENEFITS */
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 23px 7%;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .benefit {
+            text-align: center;
+            color: #555d77;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .benefit span {
+            display: block;
+            color: var(--primary);
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+        /* COMMON SECTION */
+
+        .section {
+            padding: 55px 7%;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 27px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .section-heading p {
+            font-size: 13px;
+            color: #8990a5;
+            margin-top: 7px;
+        }
+
+        .section-link {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* CATEGORY CARDS */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .category-card {
+            padding: 27px 22px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 17px;
+            transition: 0.3s;
+            min-height: 145px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px #00000012;
+        }
+
+        .books {
+            background: #f0edff;
+        }
+
+        .electronics {
+            background: #e8f9f8;
+        }
+
+        .stationery {
+            background: #fff5e4;
+        }
+
+        .category-icon {
+            font-size: 48px;
+        }
+
+        .category-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .category-card p {
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .category-card a {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 15px;
+            border-radius: 7px;
+            background: var(--primary);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* PRODUCTS */
+
+        .products-section {
+            padding-top: 20px;
+        }
+
+        /* SEARCH */
+
+        .search-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: flex;
+            max-width: 700px;
+            width: 100%;
+            margin: auto;
+            gap: 9px;
+        }
+
+        .search-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 17px;
+            border: 1px solid #dedfed;
+            border-radius: 9px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-form input:focus {
+            border-color: var(--primary);
+        }
+
+        .search-form button,
+        .filter-form button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 13px 22px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-form select {
+            padding: 12px;
+            width: 220px;
+            border: 1px solid #dedfed;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .clear-link {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .result-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* PRODUCT GRID */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 13px;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px #5945e81a;
+        }
+
+        .product-image,
+        .no-image {
+            width: 100%;
+            height: 195px;
+            object-fit: contain;
+            background: #fafaff;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+
+        .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8990a5;
+            font-size: 13px;
+        }
+
+        .product-card h3 {
+            font-size: 15px;
+            margin-bottom: 9px;
+            color: var(--dark);
+        }
+
+        .product-card h3 a {
+            color: inherit;
+        }
+
+        .product-card h3 a:hover {
+            color: var(--primary);
+        }
+
+        .product-card p {
+            font-size: 12px;
+            color: #778197;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .product-card .price {
+            color: var(--primary);
+            font-size: 19px;
+            font-weight: 800;
+            margin: 12px 0;
+        }
+
+        .view-details {
+            display: inline-block;
+            padding: 10px 13px;
+            background: #eeecff;
+            color: var(--primary);
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .add-cart-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 11px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .add-cart-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .delete-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            border-radius: 7px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--light);
+            border-radius: 12px;
+            color: #64748b;
+        }
+
+        /* SERVICE BAR */
+
+        .service-bar {
+            margin: 0 7% 35px;
+            padding: 22px;
+            background: #f3f1ff;
+            border-radius: 13px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .service-item {
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .service-item span {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .service-item strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #1c1d35;
+            color: white;
+            padding: 40px 7% 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        footer h3 {
+            margin-bottom: 13px;
+            font-size: 15px;
+        }
+
+        footer p,
+        footer a {
+            color: #c0c1d1;
+            font-size: 12px;
+            line-height: 2;
+            display: block;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #37384d;
+            padding-top: 18px;
+            font-size: 11px;
+            color: #a9aabd;
+        }
+
+        /* TABLETS */
+
+        @media (max-width: 850px) {
+            header {
+                padding: 15px 4%;
+            }
+
+            nav {
+                gap: 14px;
+            }
+
+            .hero {
+                min-height: 320px;
+                padding: 50px 5%;
+                background-position: 60% center;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .service-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* MOBILE PHONES */
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px 4%;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .logo {
+                font-size: 23px;
+            }
+
+            nav {
+                justify-content: center;
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .nav-button {
+                padding: 9px 12px;
+            }
+
+            .welcome {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero {
+                min-height: 340px;
+                padding: 45px 6%;
+                background-position: 62% center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 13px;
+            }
+
+            .hero-art {
+                display: none;
+            }
+
+            .benefits {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px 10px;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 35px 5%;
+            }
+
+            .section-heading h2 {
+                font-size: 22px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form button {
+                width: 100%;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-form select,
+            .filter-form button {
+                width: 100%;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-bar {
+                grid-template-columns: repeat(2, 1fr);
+                margin: 0 5% 25px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            nav {
+                gap: 8px;
+            }
+
+            nav a {
+                font-size: 11px;
+            }
+
+            .benefits,
+            .service-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header>
+    <a href="{% url 'home' %}" class="logo">
+        🛒 Campus<span>Cart</span>
+        <small>STUDENT MARKETPLACE</small>
+    </a>
+
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="#products">Products</a>
+        <a href="{% url 'add_product' %}">Sell Product</a>
+
+        {% if request.session.username %}
+            <a href="{% url 'view_cart' %}">My Cart</a>
+            <a href="{% url 'my_orders' %}">My Orders</a>
+            <span class="welcome">Hi, {{ request.session.username }}</span>
+            <a href="{% url 'logout' %}" class="nav-button">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-button">Login</a>
+            <a href="{% url 'register' %}" class="nav-button signup-button">Sign Up</a>
+        {% endif %}
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+    <div class="hero-content">
+
+        <span class="hero-tag">🎓 YOUR CAMPUS MARKETPLACE</span>
+
+        <h1>
+            Welcome to <span>CampusCart</span>
+            <br>Shop Smart, Live Better!
+        </h1>
+
+        <p>
+            Buy and sell books, electronics, stationery and more.
+            <br>Everything you need, right on your campus!
+        </p>
+
+        <a href="#products" class="hero-button">
+            Explore Products →
+        </a>
+
+    </div>
+
+    <div class="hero-art">🎒 💻 📚</div>
+</section>
+
+<!-- BENEFITS -->
+
+<section class="benefits">
+
+    <div class="benefit">
+        <span>🛡️</span>
+        Secure Shopping
+    </div>
+
+    <div class="benefit">
+        <span>👥</span>
+        Student Community
+    </div>
+
+    <div class="benefit">
+        <span>🚚</span>
+        Easy Buying
+    </div>
+
+    <div class="benefit">
+        <span>🎓</span>
+        Student Friendly
+    </div>
+
+</section>
+
+<!-- CATEGORY SECTION -->
+
+<section class="section">
+
+    <div class="section-heading">
+        <div>
+            <h2>Shop by Category</h2>
+            <p>Find everything you need for your student life.</p>
+        </div>
+
+        <a href="#products" class="section-link">View Products →</a>
+    </div>
+
+    <div class="category-grid">
+
+        <div class="category-card books">
+            <div class="category-icon">📚</div>
+            <div>
+                <h3>Books</h3>
+                <p>Textbooks, Novels and Reference Books.</p>
+                <a href="{% url 'home' %}?category=Books#products">Explore →</a>
+            </div>
+        </div>
+
+        <div class="category-card electronics">
+            <div class="category-icon">💻</div>
+            <div>
+                <h3>Electronics</h3>
+                <p>Laptops, Accessories and Gadgets.</p>
+                <a href="{% url 'home' %}?category=Electronics#products">Explore →</a>
+            </div>
+        </div>
+
+        <div class="category-card stationery">
+            <div class="category-icon">✏️</div>
+            <div>
+                <h3>Stationery</h3>
+                <p>Notebooks, Pens and Art Supplies.</p>
+                <a href="{% url 'home' %}?category=Stationery#products">Explore →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- PRODUCTS SECTION -->
+
+<section class="section products-section" id="products">
+
+    <div class="section-heading">
+        <div>
+            <h2>Explore Our Products</h2>
+            <p>Discover amazing products from your campus community.</p>
+        </div>
+    </div>
+
+    <!-- SEARCH AND FILTER -->
+
+    <div class="search-area">
+
+        <form method="GET" action="{% url 'home' %}" class="search-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="🔍 Search products, categories or sellers..."
+                value="{{ search_query }}"
+            >
+
+            <button type="submit">Search</button>
+
+            {% if search_query %}
+                <a href="{% url 'home' %}" class="clear-link">Clear</a>
+            {% endif %}
+
+        </form>
+
+        <form method="GET" action="{% url 'home' %}" class="filter-form">
+
+            <input type="hidden" name="search" value="{{ search_query }}">
+
+            <select name="category">
+
+                <option value="">All Categories</option>
+
+                <option value="Books"
+                    {% if selected_category == "Books" %}selected{% endif %}>
+                    Books
+                </option>
+
+                <option value="Electronics"
+                    {% if selected_category == "Electronics" %}selected{% endif %}>
+                    Electronics
+                </option>
+
+                <option value="Stationery"
+                    {% if selected_category == "Stationery" %}selected{% endif %}>
+                    Stationery
+                </option>
+
+                <option value="Other"
+                    {% if selected_category == "Other" %}selected{% endif %}>
+                    Other
+                </option>
+
+            </select>
+
+            <button type="submit">Apply Filter</button>
+
+            <a href="{% url 'home' %}" class="clear-link">Clear Filter</a>
+
+        </form>
+
+    </div>
+
+    {% if search_query %}
+        <p class="result-info">
+            Search results for: <strong>{{ search_query }}</strong>
+        </p>
+    {% endif %}
+
+    {% if selected_category %}
+        <p class="result-info">
+            Selected Category: <strong>{{ selected_category }}</strong>
+        </p>
+    {% endif %}
+
+    <!-- PRODUCT CARDS -->
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+            <div class="product-card">
+
+                {% if product.image %}
+
+                    <img
+                        src="{% url 'product_image' product_id=product.id %}"
+                        alt="{{ product.name }}"
+                        class="product-image"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+
+                    <div class="no-image" style="display:none;">
+                        Image Not Available
+                    </div>
+
+                {% else %}
+
+                    <div class="no-image">
+                        📦 No Image Available
+                    </div>
+
+                {% endif %}
+
+                <h3>
+                    {% if product.id %}
+                        <a href="{% url 'product_detail' product_id=product.id %}">
+                            {{ product.name }}
+                        </a>
+                    {% else %}
+                        {{ product.name }}
+                    {% endif %}
+                </h3>
+
+                <p>{{ product.description }}</p>
+
+                <p class="price">₹{{ product.price }}</p>
+
+                <p>Category: {{ product.category }}</p>
+
+                <p>Condition: {{ product.condition }}</p>
+
+                {% if product.id %}
+
+                    <a
+                        class="view-details"
+                        href="{% url 'product_detail' product_id=product.id %}"
+                    >
+                        View Details →
+                    </a>
+
+                    {% if request.session.username and request.session.username != product.seller %}
+
+                        <form
+                            method="POST"
+                            action="{% url 'add_to_cart' product_id=product.id %}"
+                        >
+                            {% csrf_token %}
+
+                            <button type="submit" class="add-cart-button">
+                                🛒 Add to Cart
+                            </button>
+                        </form>
+
+                    {% endif %}
+
+                    {% if request.session.username == product.seller %}
+
+                        <form
+                            method="POST"
+                            action="{% url 'delete_product' product_id=product.id %}"
+                            onsubmit="return confirm('Are you sure you want to delete this product?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="delete-button">
+                                Delete Product
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty-message">
+                <h3>No Products Found!</h3>
+                <p>Try another search or category.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- SERVICE BAR -->
+
+<section class="service-bar">
+
+    <div class="service-item">
+        <span>📦</span>
+        <strong>Wide Range</strong>
+        Books, Electronics and more
+    </div>
+
+    <div class="service-item">
+        <span>🏷️</span>
+        <strong>Affordable Prices</strong>
+        Student-friendly deals
+    </div>
+
+    <div class="service-item">
+        <span>🔄</span>
+        <strong>Easy Shopping</strong>
+        Simple buying process
+    </div>
+
+    <div class="service-item">
+        <span>🎧</span>
+        <strong>Student Support</strong>
+        Here to help
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+            <h3>🛒 CampusCart</h3>
+            <p>
+                Your ultimate marketplace for students.
+                Buy, sell and make your campus life easier.
+            </p>
+            <p>Buy • Sell • Grow 🎓</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="#products">Products</a>
+            <a href="{% url 'add_product' %}">Sell Product</a>
+        </div>
+
+        <div>
+            <h3>Categories</h3>
+            <a href="{% url 'home' %}?category=Books#products">Books</a>
+            <a href="{% url 'home' %}?category=Electronics#products">Electronics</a>
+            <a href="{% url 'home' %}?category=Stationery#products">Stationery</a>
+        </div>
+
+        <div>
+            <h3>Connect With Us</h3>
+            <p>📧 support@campuscart.com</p>
+            <p>Made with ❤️ for Students</p>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CampusCart. All Rights Reserved.
+    </div>
+
+</footer>
+
+</body>
+</html>

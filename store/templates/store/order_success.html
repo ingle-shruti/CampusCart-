@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-card {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 25px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .check {
+            width: 75px;
+            height: 75px;
+            background: #e0f5e9;
+            color: #219653;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            color: #219653;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #555;
+            margin: 12px 0;
+        }
+
+        .amount {
+            font-size: 25px;
+            font-weight: bold;
+            color: #263b80;
+            margin: 20px 0;
+        }
+
+        .home-btn {
+            display: inline-block;
+            background: #263b80;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .home-btn:hover {
+            background: #17275c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="success-card">
+
+    <div class="check">✓</div>
+
+    <h1>Order Placed Successfully!</h1>
+
+    <p>Thank you for shopping with CampusCart.</p>
+
+    <p>Your order has been saved successfully.</p>
+
+    <p><strong>Order ID:</strong></p>
+    <p>{{ order_id }}</p>
+
+    <div class="amount">
+        Total: ₹{{ total }}
+    </div>
+
+    <p>Your order status: <strong>Placed</strong></p>
+
+    <a href="{% url 'home' %}" class="home-btn">
+        Continue Shopping
+    </a>
+
+</div>
+
+</body>
+</html>

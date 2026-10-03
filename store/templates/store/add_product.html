@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Product | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #00000015;
+        }
+
+        h2 {
+            text-align: center;
+            color: #263b80;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #263b80;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #182b68;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #263b80;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Sell Your Product</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Product Name</label>
+        <input type="text" name="name" placeholder="Enter product name" required>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Describe your product" required></textarea>
+
+        <label>Price (₹)</label>
+        <input type="number" name="price" min="0.01" step="0.01" placeholder="Enter price" required>
+
+        <label>Category</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Books">Books</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Condition</label>
+        <select name="condition" required>
+            <option value="">Select Condition</option>
+            <option value="New">New</option>
+            <option value="Like New">Like New</option>
+            <option value="Used">Used</option>
+        </select>
+
+        <label>Product Photo</label>
+        <input type="file" name="image" accept="image/*" required>
+
+        <button type="submit">Add Product</button>
+    </form>
+
+    <a href="/" class="back">← Back to Home</a>
+
+</div>
+
+</body>
+</html>

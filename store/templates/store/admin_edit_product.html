@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product | CampusCart Admin</title>
+
+```
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f5fb;
+        padding: 35px 15px;
+        color: #25253b;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+    }
+
+    h1 {
+        color: #4f46e5;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #777;
+        margin-bottom: 25px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin: 18px 0 8px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    textarea {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #6366f1;
+    }
+
+    .current-image {
+        margin-top: 12px;
+    }
+
+    .current-image img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .error {
+        background: #fee2e2;
+        color: #b91c1c;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .note {
+        color: #777;
+        font-size: 13px;
+        margin-top: 7px;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    button, .back-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    button {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .back-btn {
+        background: #e5e7eb;
+        color: #333;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Edit Product</h1>
+<p class="subtitle">Update product details and upload a product image.</p>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Product Name</label>
+    <input type="text" name="name" value="{{ product.name }}" required>
+
+    <label>Description</label>
+    <textarea name="description" required>{{ product.description }}</textarea>
+
+    <label>Price (₹)</label>
+    <input type="number" name="price" value="{{ product.price }}" min="0.01" step="0.01" required>
+
+    <label>Category</label>
+    <select name="category" required>
+        <option value="Books" {% if product.category == "Books" %}selected{% endif %}>Books</option>
+        <option value="Electronics" {% if product.category == "Electronics" %}selected{% endif %}>Electronics</option>
+        <option value="Notes" {% if product.category == "Notes" %}selected{% endif %}>Notes</option>
+        <option value="Stationery" {% if product.category == "Stationery" %}selected{% endif %}>Stationery</option>
+        <option value="Others" {% if product.category == "Others" %}selected{% endif %}>Others</option>
+    </select>
+
+    <label>Condition</label>
+    <select name="condition" required>
+        <option value="New" {% if product.condition == "New" %}selected{% endif %}>New</option>
+        <option value="Like New" {% if product.condition == "Like New" %}selected{% endif %}>Like New</option>
+        <option value="Used" {% if product.condition == "Used" %}selected{% endif %}>Used</option>
+    </select>
+
+    <label>Current Product Image</label>
+
+    {% if product.image %}
+    <div class="current-image">
+        <img src="{% url 'product_image' product_id=product.id %}" alt="{{ product.name }}">
+    </div>
+    {% else %}
+    <p class="note">No image uploaded yet.</p>
+    {% endif %}
+
+    <label>Upload New Image</label>
+    <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
+
+    <p class="note">JPG, PNG or WEBP. Maximum size: 5 MB. Leave empty to keep the existing image.</p>
+
+    <div class="buttons">
+        <button type="submit">Update Product</button>
+        <a href="{% url 'admin_products' %}" class="back-btn">Back</a>
+    </div>
+
+</form>
+```
+
+</div>
+
+</body>
+</html>

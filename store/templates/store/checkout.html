@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #263b80;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 18px;
+            color: #263238;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 23px;
+            font-weight: bold;
+            color: #263b80;
+            margin-top: 18px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .place-order {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            background: #263b80;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .place-order:hover {
+            background: #17275c;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+            color: #263b80;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Checkout</h1>
+
+    <div class="card">
+        <h2>Order Summary</h2>
+
+        {% for item in cart_items %}
+        <div class="item">
+            <div>
+                <strong>{{ item.name }}</strong>
+                <p>Price: ₹{{ item.price }} × {{ item.quantity }}</p>
+            </div>
+
+            <strong>₹{{ item.subtotal }}</strong>
+        </div>
+        {% endfor %}
+
+        <div class="total">
+            Total: ₹{{ total }}
+        </div>
+    </div>
+
+    <div class="card">
+
+        <h2>Delivery Details</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Customer Name</label>
+            <input type="text"
+                   name="customer_name"
+                   placeholder="Enter your full name"
+                   required>
+
+            <label>Phone Number</label>
+            <input type="tel"
+                   name="phone"
+                   placeholder="Enter your phone number"
+                   pattern="[0-9]{10}"
+                   maxlength="10"
+                   required>
+
+            <label>Delivery Address</label>
+            <textarea name="address"
+                      rows="4"
+                      placeholder="Enter your complete address"
+                      required></textarea>
+
+            <button type="submit" class="place-order">
+                Place Order
+            </button>
+        </form>
+
+        <a href="{% url 'view_cart' %}" class="back">
+            ← Back to Cart
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

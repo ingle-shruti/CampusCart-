@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+db.sqlite3
+media/
+.env
+reset_password.py
+test_mongodb.py
+.git/

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            padding: 30px 15px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #263b80;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            color: #666;
+            font-size: 13px;
+            margin-top: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            background: #e8f5ed;
+            color: #16834b;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .order-date {
+            color: #666;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .section-title {
+            color: #263b80;
+            margin: 20px 0 12px;
+        }
+
+        .item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            line-height: 1.8;
+        }
+
+        .item strong {
+            color: #263b80;
+            font-size: 16px;
+        }
+
+        .total {
+            text-align: right;
+            color: #263b80;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .delivery {
+            margin-top: 22px;
+            padding: 18px;
+            background: #f5f7fb;
+            border-radius: 8px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .delivery strong {
+            color: #263b80;
+        }
+
+        /* Order Status Tracker */
+
+        .tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .tracker::before {
+            content: "";
+            position: absolute;
+            height: 4px;
+            background: #ddd;
+            top: 13px;
+            left: 12%;
+            right: 12%;
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            width: 33.33%;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .step.completed {
+            color: #16834b;
+            font-weight: bold;
+        }
+
+        .step.completed .circle {
+            background: #16834b;
+        }
+
+        .empty {
+            background: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 12px;
+        }
+
+        .empty h2 {
+            color: #263b80;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #263b80;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 7px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #17275c;
+        }
+
+        @media (max-width: 600px) {
+            .order-card {
+                padding: 18px;
+            }
+
+            .total {
+                font-size: 19px;
+            }
+
+            .tracker {
+                margin: 25px 0;
+            }
+
+            .step {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>My Orders 🛒</h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <!-- Order Header -->
+
+            <div class="order-header">
+
+                <div>
+                    <strong>Order ID:</strong>
+
+                    <p class="order-id">
+                        {{ order.id }}
+                    </p>
+
+                    {% if order.created_at %}
+                        <p class="order-date">
+                            Order Date: {{ order.created_at }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="status">
+                    {{ order.status|default:"Placed" }}
+                </div>
+
+            </div>
+
+            <!-- Dynamic Order Status Tracker -->
+
+            {% with current_status=order.status|default:"Placed" %}
+
+            <div class="tracker">
+
+                <!-- Placed -->
+
+                <div class="step completed">
+
+                    <div class="circle">✓</div>
+
+                    Placed
+
+                </div>
+
+                <!-- Shipped -->
+
+                <div class="step {% if current_status == 'Shipped' or current_status == 'Delivered' %}completed{% endif %}">
+
+                    <div class="circle">
+
+                        {% if current_status == 'Shipped' or current_status == 'Delivered' %}
+                            ✓
+                        {% else %}
+                            2
+                        {% endif %}
+
+                    </div>
+
+                    Shipped
+
+                </div>
+
+                <!-- Delivered -->
+
+                <div class="step {% if current_status == 'Delivered' %}completed{% endif %}">
+
+                    <div class="circle">
+
+                        {% if current_status == 'Delivered' %}
+                            ✓
+                        {% else %}
+                            3
+                        {% endif %}
+
+                    </div>
+
+                    Delivered
+
+                </div>
+
+            </div>
+
+            {% endwith %}
+
+            <!-- Ordered Products -->
+
+            <h3 class="section-title">
+                Ordered Products
+            </h3>
+
+            {% for item in order.items %}
+
+            <div class="item">
+
+                <strong>{{ item.name }}</strong>
+
+                <p>
+                    Price: ₹{{ item.price }} × {{ item.quantity }}
+                </p>
+
+                <p>
+                    Subtotal: ₹{{ item.subtotal }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+            <!-- Total -->
+
+            <div class="total">
+                Total: ₹{{ order.total }}
+            </div>
+
+            <!-- Delivery Details -->
+
+            <div class="delivery">
+
+                <strong>📦 Delivery Details</strong>
+
+                <p>
+                    Name: {{ order.customer_name }}
+                </p>
+
+                <p>
+                    Address: {{ order.address }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Orders Yet!</h2>
+
+            <p>Your orders will appear here.</p>
+
+        </div>
+
+    {% endif %}
+
+    <center>
+
+        <a href="{% url 'home' %}" class="btn">
+            Continue Shopping
+        </a>
+
+    </center>
+
+</div>
+
+</body>
+</html>

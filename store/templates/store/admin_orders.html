@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            padding: 30px 15px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #263b80;
+            margin-bottom: 25px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            color: #666;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+            margin-top: 5px;
+        }
+
+        .status {
+            color: #16834b;
+            font-weight: bold;
+        }
+
+        .item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            line-height: 1.7;
+        }
+
+        .total {
+            text-align: right;
+            color: #263b80;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 15px;
+        }
+
+        .delivery {
+            background: #f5f7fb;
+            padding: 15px;
+            border-radius: 7px;
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #263b80;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .status-form {
+            margin-top: 12px;
+        }
+
+        .status-form select {
+            padding: 9px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #263b80;
+            color: white;
+            padding: 9px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background: #182b65;
+        }
+
+        @media (max-width: 600px) {
+            .order-card {
+                padding: 15px;
+            }
+
+            .status-form select,
+            .update-btn {
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📦 Admin - Manage Orders</h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <div class="order-header">
+
+                <div>
+                    <strong>Order ID:</strong>
+                    <p class="order-id">{{ order.id }}</p>
+                </div>
+
+                <div>
+
+                    <div class="status">
+                        Status: {{ order.status|default:"Placed" }}
+                    </div>
+
+                    <form method="POST"
+                          action="{% url 'update_order_status' order.id %}"
+                          class="status-form">
+
+                        {% csrf_token %}
+
+                        <select name="status" required>
+
+                            <option value="Placed"
+                                {% if order.status == "Placed" %}selected{% endif %}>
+                                Placed
+                            </option>
+
+                            <option value="Shipped"
+                                {% if order.status == "Shipped" %}selected{% endif %}>
+                                Shipped
+                            </option>
+
+                            <option value="Delivered"
+                                {% if order.status == "Delivered" %}selected{% endif %}>
+                                Delivered
+                            </option>
+
+                        </select>
+
+                        <button type="submit" class="update-btn">
+                            Update Status
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <h3>Ordered Products</h3>
+
+            {% for item in order.items %}
+
+            <div class="item">
+
+                <strong>{{ item.name }}</strong>
+
+                <p>
+                    Price: ₹{{ item.price }} × {{ item.quantity }}
+                </p>
+
+                <p>
+                    Subtotal: ₹{{ item.subtotal }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+            <div class="total">
+                Total: ₹{{ order.total }}
+            </div>
+
+            <div class="delivery">
+
+                <strong>Delivery Details</strong>
+
+                <p>Name: {{ order.customer_name }}</p>
+                <p>Address: {{ order.address }}</p>
+                <p>Customer: {{ order.username }}</p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>No Orders Found</h2>
+            <p>Customer orders will appear here.</p>
+        </div>
+
+    {% endif %}
+
+    <center>
+        <a href="{% url 'home' %}" class="btn">
+            Back to Home
+        </a>
+    </center>
+
+</div>
+
+</body>
+</html>

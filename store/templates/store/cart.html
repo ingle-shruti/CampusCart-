@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart | CampusCart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #263238;
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .details h3 {
+            color: #263238;
+            margin-bottom: 10px;
+        }
+
+        .details p {
+            margin: 7px 0;
+            color: #555;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        button {
+            border: none;
+            padding: 8px 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .qty-btn {
+            background: #e3eafc;
+            color: #263b80;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            background: #e53935;
+            color: white;
+        }
+
+        .total {
+            background: white;
+            padding: 22px;
+            text-align: right;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .checkout-area {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            background: #263b80;
+            color: white;
+            padding: 14px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .checkout-btn:hover {
+            background: #17275c;
+        }
+
+        .continue {
+            display: inline-block;
+            margin-top: 20px;
+            background: #263b80;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+        }
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 My Shopping Cart</h1>
+
+    {% if cart_items %}
+
+        {% for product in cart_items %}
+
+        <div class="cart-item">
+
+            {% if product.image %}
+                <img src="{% url 'product_image' product_id=product.id %}"
+                     class="product-image"
+                     alt="{{ product.name }}">
+            {% endif %}
+
+            <div class="details">
+
+                <h3>{{ product.name }}</h3>
+
+                <p>Price: ₹{{ product.price }}</p>
+
+                <p>Seller: {{ product.seller }}</p>
+
+                <div class="quantity">
+
+                    <form method="POST"
+                          action="{% url 'decrease_quantity' product_id=product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="qty-btn">−</button>
+                    </form>
+
+                    <strong>{{ product.quantity }}</strong>
+
+                    <form method="POST"
+                          action="{% url 'increase_quantity' product_id=product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="qty-btn">+</button>
+                    </form>
+
+                </div>
+
+                <p>
+                    Subtotal: ₹{{ product.subtotal }}
+                </p>
+
+                <form method="POST"
+                      action="{% url 'remove_from_cart' product_id=product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="remove-btn">
+                        Remove
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <div class="total">
+            Total: ₹{{ total }}
+        </div>
+
+        <div class="checkout-area">
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+                Proceed to Checkout →
+            </a>
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+            <h2>Your cart is empty!</h2>
+            <p>Add some products to your cart.</p>
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'home' %}" class="continue">
+        Continue Shopping
+    </a>
+
+</div>
+
+</body>
+</html>
