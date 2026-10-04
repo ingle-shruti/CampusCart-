@@ -12,6 +12,16 @@ from .mongodb import (
     save_order
 )
 
+
+# Check whether the logged-in account is active
+def is_account_active(username):
+    user = users_collection.find_one({"username": username})
+
+    # Existing accounts without is_active are treated as active
+    return user is not None and user.get("is_active", True) is True
+
+
+# Home
 def home(request):
     search_query = request.GET.get("search", "")
     selected_category = request.GET.get("category", "")
@@ -46,11 +56,16 @@ def home(request):
 # Student Registration
 def register(request):
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
-        email = request.POST.get("email")
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
+        full_name = request.POST.get("full_name", "").strip()
+        email = request.POST.get("email", "").strip()
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+        confirm_password = request.POST.get("confirm_password", "")
+
+        if not all([full_name, email, username, password]):
+            return render(request, "store/register.html", {
+                "error": "Please fill in all fields!"
+            })
 
         if password != confirm_password:
             return render(request, "store/register.html", {
@@ -68,7 +83,8 @@ def register(request):
             "full_name": full_name,
             "email": email,
             "username": username,
-            "password": make_password(password)
+            "password": make_password(password),
+            "is_active": True
         })
 
         return redirect("login")
@@ -79,10 +95,15 @@ def register(request):
 # Student Login
 def login(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
 
         user = users_collection.find_one({"username": username})
+
+        if user and not user.get("is_active", True):
+            return render(request, "store/login.html", {
+                "error": "Your account is deactivated. Please reactivate your account first."
+            })
 
         if user and check_password(password, user["password"]):
             request.session["username"] = username
@@ -101,9 +122,59 @@ def logout(request):
     return redirect("home")
 
 
+# Deactivate Account
+def deactivate_account(request):
+    if not request.session.get("username"):
+        return redirect("login")
+
+    if request.method != "POST":
+        return redirect("home")
+
+    username = request.session.get("username")
+
+    users_collection.update_one(
+        {"username": username},
+        {"$set": {"is_active": False}}
+    )
+
+    request.session.flush()
+
+    return redirect("home")
+
+
+# Reactivate Account
+def reactivate_account(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+
+        user = users_collection.find_one({"username": username})
+
+        if (
+            user
+            and user.get("is_active", True) is False
+            and check_password(password, user["password"])
+        ):
+            users_collection.update_one(
+                {"username": username},
+                {"$set": {"is_active": True}}
+            )
+
+            return redirect("login")
+
+        return render(request, "store/reactivate_account.html", {
+            "error": "Invalid username or password, or account is already active!"
+        })
+
+    return render(request, "store/reactivate_account.html")
+
+
 # Add Product
 def add_product(request):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method == "POST":
@@ -193,7 +264,10 @@ def product_detail(request, product_id):
 
 # Student Edit Product
 def edit_product(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     try:
@@ -272,7 +346,10 @@ def edit_product(request, product_id):
 
 # Student Delete Product
 def delete_product(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method != "POST":
@@ -304,7 +381,10 @@ def delete_product(request, product_id):
 
 # Add Product to Cart
 def add_to_cart(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method != "POST":
@@ -336,7 +416,10 @@ def add_to_cart(request, product_id):
 
 # View Cart
 def view_cart(request):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     cart = request.session.get("cart", {})
@@ -367,7 +450,10 @@ def view_cart(request):
 
 # Increase Cart Quantity
 def increase_quantity(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method != "POST":
@@ -386,7 +472,10 @@ def increase_quantity(request, product_id):
 
 # Decrease Cart Quantity
 def decrease_quantity(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method != "POST":
@@ -408,7 +497,10 @@ def decrease_quantity(request, product_id):
 
 # Remove Product from Cart
 def remove_from_cart(request, product_id):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     if request.method != "POST":
@@ -425,7 +517,10 @@ def remove_from_cart(request, product_id):
 
 # Checkout Page
 def checkout(request):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     cart = request.session.get("cart", {})
@@ -496,7 +591,10 @@ def checkout(request):
 
 # My Orders
 def my_orders(request):
-    if not request.session.get("username"):
+    if not request.session.get("username") or not is_account_active(
+        request.session.get("username")
+    ):
+        request.session.flush()
         return redirect("login")
 
     username = request.session.get("username")
@@ -672,32 +770,26 @@ def update_order_status(request, order_id):
 
 # Admin Dashboard
 def admin_dashboard(request):
-    # Check Admin Login
     if not request.user.is_authenticated or not request.user.is_superuser:
         return redirect("admin:login")
 
-    # Dashboard Statistics
     total_products = products_collection.count_documents({})
     total_orders = orders_collection.count_documents({})
     total_users = users_collection.count_documents({})
 
-    # Calculate Total Revenue
     total_revenue = sum(
         float(order.get("total", order.get("total_amount", 0)) or 0)
         for order in orders_collection.find()
     )
 
-    # Get Latest 5 Orders
     recent_orders = list(
         orders_collection.find().sort("_id", -1).limit(5)
     )
 
-    # Get Latest 5 Products
     recent_products = list(
         products_collection.find().sort("_id", -1).limit(5)
     )
 
-    # Convert MongoDB ObjectId into String
     for order in recent_orders:
         order["id"] = str(order["_id"])
 
@@ -711,7 +803,6 @@ def admin_dashboard(request):
             product["has_image"]
         )
 
-    # Send Data to Dashboard HTML
     return render(request, "store/admin_dashboard.html", {
         "total_products": total_products,
         "total_orders": total_orders,
@@ -720,3 +811,33 @@ def admin_dashboard(request):
         "recent_orders": recent_orders,
         "recent_products": recent_products
     })
+    # Admin User Management
+def admin_users(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect("admin:login")
+
+    users = list(users_collection.find().sort("_id", -1))
+
+    for user in users:
+        user["id"] = str(user["_id"])
+        user.pop("password", None)
+
+    return render(request, "store/admin_users.html", {
+        "users": users
+    })
+
+
+# Admin Delete User Account
+def admin_delete_user(request, user_id):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect("admin:login")
+
+    if request.method == "POST":
+        try:
+            users_collection.delete_one({
+                "_id": ObjectId(user_id)
+            })
+        except Exception as e:
+            print("Delete user error:", e)
+
+    return redirect("admin_users")

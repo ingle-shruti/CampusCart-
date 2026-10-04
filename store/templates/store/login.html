@@ -112,9 +112,14 @@
             <button type="submit">Login</button>
         </form>
 
-        <div class="register-link">
+                <div class="register-link">
             Don't have an account?
             <a href="/register/">Register Now</a>
+        </div>
+
+        <div class="register-link" style="margin-top: 12px;">
+            Deactivated your account?
+            <a href="{% url 'reactivate_account' %}">Reactivate Account</a>
         </div>
 
     </div>

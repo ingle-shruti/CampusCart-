@@ -8,6 +8,12 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('admin-users/', views.admin_users, name='admin_users'),
+path('admin-delete-user/<str:user_id>/', views.admin_delete_user, name='admin_delete_user'),
+
+    # Account Management
+    path('deactivate-account/', views.deactivate_account, name='deactivate_account'),
+    path('reactivate-account/', views.reactivate_account, name='reactivate_account'),
 
     path('add-product/', views.add_product, name='add_product'),
 
@@ -83,9 +89,8 @@ urlpatterns = [
         views.admin_edit_product,
         name='admin_edit_product'
     ),
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    
 
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 
     # Admin Order Management
     path('admin-orders/', views.admin_orders, name='admin_orders'),
