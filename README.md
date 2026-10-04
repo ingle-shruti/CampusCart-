@@ -98,3 +98,6 @@ Full Stack Development Intern
 ## 📌 Project Purpose
 
 CampusCart aims to make buying and selling useful academic products easier and more convenient for college students.
+## 📸 Project Screenshots
+
+![CampusCart Project Overview](screenshots/campuscart-overview.png)
