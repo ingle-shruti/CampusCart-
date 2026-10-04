@@ -1,49 +1,100 @@
 ﻿# CampusCart 🛒
 
-CampusCart is a student marketplace where college students can buy and sell used books, electronics, stationery, and other products.
+**CampusCart** is a student marketplace web application that allows college students to buy and sell used books, electronics, stationery, and other essential products.
 
-## Features
-- Student Registration and Login
-- Add and Sell Products
-- Search and Category Filtering
-- Product Images and Details
-- Shopping Cart
-- Checkout and Order Placement
-- My Orders and Order Tracking
-- Admin Dashboard
-- Admin Product and Order Management
+🌐 **Live Demo:** https://campuscart-40pk.onrender.com/
 
-## Technologies Used
-- Python
-- Django
-- HTML
-- CSS
-- JavaScript
-- MongoDB
-- SQLite
-- Bootstrap
+## ✨ Features
 
-## How to Run
+* Student Registration, Login and Logout
+* Add, Edit and Delete Products
+* Search Products and Filter by Category
+* Product Images and Detailed Information
+* Shopping Cart with Quantity Management
+* Checkout and Order Placement
+* My Orders and Order Status Tracking
+* Admin Dashboard
+* Admin Product and Order Management
+
+## 🛠️ Technologies Used
+
+**Frontend**
+
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap
+
+**Backend**
+
+* Python
+* Django
+
+**Database**
+
+* MongoDB
+* SQLite (for Django built-in admin features)
+
+**Deployment**
+
+* Render
+* GitHub
+
+## 🚀 How to Run Locally
 
 1. Clone the repository:
-   `git clone https://github.com/ingle-shruti/CampusCart-.git`
+
+   ```bash
+   git clone https://github.com/ingle-shruti/CampusCart-.git
+   ```
 
 2. Open the project folder:
-   `cd CampusCart-`
 
-3. Install the required packages.
+   ```bash
+   cd CampusCart-
+   ```
 
-4. Start MongoDB.
+3. Create and activate a virtual environment:
 
-5. Run migrations:
-   `python manage.py migrate`
+   ```bash
+   python -m venv venv
+   ```
 
-6. Start the server:
-   `python manage.py runserver`
+   Windows PowerShell:
 
-7. Open `http://127.0.0.1:8000/` in your browser.
+   ```powershell
+   .\venv\Scripts\Activate.ps1
+   ```
 
-## Developer
+4. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Configure your MongoDB connection using the `MONGO_URI` environment variable. Set `DJANGO_SECRET_KEY` as well.
+
+6. Run database migrations:
+
+   ```bash
+   python manage.py migrate
+   ```
+
+7. Start the development server:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+8. Open in your browser:
+
+   `http://127.0.0.1:8000/`
+
+## 👩‍💻 Developer
+
 **Shruti Ingle**
+Full Stack Development Intern
 
-*Full Stack Development Project*
+## 📌 Project Purpose
+
+CampusCart aims to make buying and selling useful academic products easier and more convenient for college students.
